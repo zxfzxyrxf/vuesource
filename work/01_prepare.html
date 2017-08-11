@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+<div id="test">尚硅谷IT教育</div>
+
+<ul id="fragment_test">
+  <li>test1</li>
+  <li>test2</li>
+  <li>test3</li>
+</ul>
+<!--
+1. [].slice.call(lis): 将伪数组转换为真数组
+2. node.nodeType: 得到节点类型
+3. Object.defineProperty(obj, propertyName, {}): 给对象添加属性(指定描述符)
+4. Object.keys(obj): 得到对象自身可枚举属性组成的数组
+5. obj.hasOwnProperty(prop): 判断prop是否是obj自身的属性
+6. DocumentFragment: 文档碎片(高效批量更新多个节点)
+-->
+
+<script type="text/javascript">
+  //1. [].slice.call(lis): 将伪数组转换为真数组
+  let lis = document.getElementsByTagName('li') //lis就是一个伪数组
+  console.log(lis instanceof Array, lis.forEach) // false undefined
+  lis = [].slice.call(lis) // 相当于lis.slice()
+  console.log(lis instanceof Array, lis.forEach) // true function
+
+  //2. node.nodeType: 得到节点类型
+  const elementNode = document.getElementById('test')
+  const attrNode = elementNode.getAttributeNode('id')
+  const textNode = elementNode.firstChild
+  console.log(elementNode.nodeType, attrNode.nodeType, textNode.nodeType) // 1 2 3
+
+  //3. Object.defineProperty(obj, propertyName, {}): 给对象添加属性(指定描述符)
+  const person = {
+    firstName: 'A',
+    lastName: 'B'
+  }
+  Object.defineProperty(person, 'fullName', {
+    configurable: false, // 是否可以重新define此属性
+    enumerable: true, //是否可以枚举
+    // value: 'A-B', // 指定初始值
+    // writable: false, // 是否可以修改
+
+    get (){// 用来得到当前属性的值的回调函数, 当读取属性值时自动调用
+      return this.firstName + '-' + this.lastName
+    },
+    set (value) { // 用来监视当前属性值的变化的回调函数, 当属性值发生改变时自动调用
+      const names = value.split('-')
+      this.firstName = names[0]
+      this.lastName = names[1]
+    }
+  })
+
+  console.log(person.fullName)  // A-B
+  person.firstName = "C"
+  person.lastName = "D"
+  console.log(person.fullName) // C-D
+
+  person.fullName = 'E-F'
+  console.log(person.firstName, person.lastName) // E  F
+
+  //4. Object.keys(obj): 得到对象自身可枚举属性组成的数组
+  Object.keys(person).forEach((key) => {
+    console.log(key)
+  })
+
+  //5. obj.hasOwnProperty(prop): 判断prop是否是obj自身的属性
+  console.log(person.hasOwnProperty('firstName'))
+  console.log(person.toString(), person.hasOwnProperty('toString'))
+
+  //6. DocumentFragment: 文档碎片(高效批量更新多个节点)
+  /*
+   <ul id="fragment_test">
+     <li>test1</li>
+     <li>test2</li>
+     <li>test3</li>
+   </ul>
+   */
+  const ul = document.getElementById('fragment_test')
+  let child
+
+  // 创建一个空的fragment对象
+  const fragment = document.createDocumentFragment()
+  while(child=ul.firstChild) {
+    fragment.appendChild(child) //将child从ul中移除, 并添加到fragment中
+  }
+
+  // 更新fragment中所有的li子节点
+  [].slice.call(fragment.childNodes).forEach(node => {
+    if(node.nodeType===1) { // 必须是元素节点
+      node.textContent = 'atguigu'  // 此处没有更新界面
+    }
+  })
+
+  // 将fragment添加到ul中
+  ul.appendChild(fragment)  // 此处批量更新界面
+
+
+
+</script>
+</body>
+</html>

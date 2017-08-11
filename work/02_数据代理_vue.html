@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>02_数据代理_vue</title>
+</head>
+<body>
+<div id="test">
+
+</div>
+
+<script type="text/javascript" src="js/vue.js"></script>
+<script type="text/javascript">
+  const vm = new Vue({
+    el: '#test',
+    data: {
+      msg: 'atguigu'
+    }
+  })
+
+  console.log(vm.msg) // atguigu   代理读
+  vm.msg = 'xfzhang'   // 代理写
+  console.log(vm)
+  console.log(vm._data.msg) //xfzhang
+
+  // 数据代理: vm代理对data所有属性的操作(读/写)
+</script>
+</body>
+</html>

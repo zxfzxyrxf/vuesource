@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>05_模板解析_一般指令</title>
+
+  <style>
+    .a {
+      color: red;
+    }
+    .b {
+      background: blue;
+    }
+  </style>
+</head>
+<body>
+
+<div id="test">
+  <p v-text="msg"></p>
+  <p v-html="msg"></p>
+  <p class="b" v-class="aClass">xxxxxxx</p>
+</div>
+
+<script type="text/javascript" src="js/mvvm/compile.js"></script>
+<script type="text/javascript" src="js/mvvm/mvvm.js"></script>
+<script type="text/javascript" src="js/mvvm/observer.js"></script>
+<script type="text/javascript" src="js/mvvm/watcher.js"></script>
+<script type="text/javascript">
+  new MVVM({
+    el: '#test',
+    data: {
+      msg: '<a href="http://www.atguigu.com">尚硅谷</a>',
+      aClass: 'a'
+    }
+  })
+</script>
+</body>
+</html>
